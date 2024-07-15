@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// A store of consumable items.
@@ -32,21 +32,20 @@ class ConsumableStore {
 
   /// Returns the list of consumables from the store.
   static Future<List<String>> load() async {
-    return (await SharedPreferences.getInstance()).getStringList(_kPrefKey) ??
-        <String>[];
+    return  Future.delayed(Duration(seconds: 1));
+  // return (await SharedPreferences.getInstance()).getStringList(_kPrefKey) ??
+  //     <String>[];
   }
 
   static Future<void> _doSave(String id) async {
-    final List<String> cached = await load();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    cached.add(id);
-    await prefs.setStringList(_kPrefKey, cached);
+
+   // await prefs.setStringList(_kPrefKey, cached);
   }
 
   static Future<void> _doConsume(String id) async {
-    final List<String> cached = await load();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    cached.remove(id);
-    await prefs.setStringList(_kPrefKey, cached);
+   // final List<String> cached = await load();
+   // final SharedPreferences prefs = await SharedPreferences.getInstance();
+   // cached.remove(id);
+   // await prefs.setStringList(_kPrefKey, cached);
   }
 }

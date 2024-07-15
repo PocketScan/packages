@@ -156,7 +156,7 @@ class _MyAppState extends State<_MyApp> {
     }
     if (_purchasePending) {
       stack.add(
-        const Stack(
+        Stack(
           children: <Widget>[
             Opacity(
               opacity: 0.3,
