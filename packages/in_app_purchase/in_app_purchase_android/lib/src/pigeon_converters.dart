@@ -8,39 +8,40 @@ import 'messages.g.dart';
 
 /// Converts a [BillingChoiceMode] to the Pigeon equivalent.
 PlatformBillingChoiceMode platformBillingChoiceMode(BillingChoiceMode mode) {
-  return switch (mode) {
-    BillingChoiceMode.playBillingOnly =>
-      PlatformBillingChoiceMode.playBillingOnly,
-    BillingChoiceMode.alternativeBillingOnly =>
-      PlatformBillingChoiceMode.alternativeBillingOnly,
-    BillingChoiceMode.userChoiceBilling =>
-      PlatformBillingChoiceMode.userChoiceBilling,
-  };
+  switch (mode) {
+    case BillingChoiceMode.playBillingOnly:
+      return PlatformBillingChoiceMode.playBillingOnly;
+      break;
+    case BillingChoiceMode.alternativeBillingOnly:
+      return PlatformBillingChoiceMode.alternativeBillingOnly;
+      break;
+    case BillingChoiceMode.userChoiceBilling:
+      return PlatformBillingChoiceMode.userChoiceBilling;
+      break;
+  }
 }
 
 /// Creates a [BillingResultWrapper] from the Pigeon equivalent.
 BillingResultWrapper resultWrapperFromPlatform(PlatformBillingResult result) {
   return BillingResultWrapper(
       responseCode:
-          const BillingResponseConverter().fromJson(result.responseCode),
+      const BillingResponseConverter().fromJson(result.responseCode),
       debugMessage: result.debugMessage);
 }
 
 /// Creates a [ProductDetailsResponseWrapper] from the Pigeon equivalent.
-ProductDetailsResponseWrapper productDetailsResponseWrapperFromPlatform(
-    PlatformProductDetailsResponse response) {
+ProductDetailsResponseWrapper productDetailsResponseWrapperFromPlatform(PlatformProductDetailsResponse response) {
   return ProductDetailsResponseWrapper(
       billingResult: resultWrapperFromPlatform(response.billingResult),
       productDetailsList: response.productDetails
-          // See TODOs in messages.dart for why casting away nullability is safe.
+      // See TODOs in messages.dart for why casting away nullability is safe.
           .map((PlatformProductDetails? p) => p!)
           .map(productDetailsWrapperFromPlatform)
           .toList());
 }
 
 /// Creates a [ProductDetailsWrapper] from the Pigeon equivalent.
-ProductDetailsWrapper productDetailsWrapperFromPlatform(
-    PlatformProductDetails product) {
+ProductDetailsWrapper productDetailsWrapperFromPlatform(PlatformProductDetails product) {
   return ProductDetailsWrapper(
     description: product.description,
     name: product.name,
@@ -50,7 +51,7 @@ ProductDetailsWrapper productDetailsWrapperFromPlatform(
     oneTimePurchaseOfferDetails: oneTimePurchaseOfferDetailsWrapperFromPlatform(
         product.oneTimePurchaseOfferDetails),
     subscriptionOfferDetails: product.subscriptionOfferDetails
-        // See comment in messages.dart for why casting away nullability is safe.
+    // See comment in messages.dart for why casting away nullability is safe.
         ?.map((PlatformSubscriptionOfferDetails? o) => o!)
         .map(subscriptionOfferDetailsWrapperFromPlatform)
         .toList(),
@@ -59,8 +60,7 @@ ProductDetailsWrapper productDetailsWrapperFromPlatform(
 
 /// Creates a [OneTimePurchaseOfferDetailsWrapper] from the Pigeon equivalent.
 OneTimePurchaseOfferDetailsWrapper?
-    oneTimePurchaseOfferDetailsWrapperFromPlatform(
-        PlatformOneTimePurchaseOfferDetails? details) {
+oneTimePurchaseOfferDetailsWrapperFromPlatform(PlatformOneTimePurchaseOfferDetails? details) {
   if (details == null) {
     return null;
   }
@@ -72,12 +72,11 @@ OneTimePurchaseOfferDetailsWrapper?
 }
 
 /// Creates a [PurchaseHistoryResult] from the Pigeon equivalent.
-PurchasesHistoryResult purchaseHistoryResultFromPlatform(
-    PlatformPurchaseHistoryResponse response) {
+PurchasesHistoryResult purchaseHistoryResultFromPlatform(PlatformPurchaseHistoryResponse response) {
   return PurchasesHistoryResult(
     billingResult: resultWrapperFromPlatform(response.billingResult),
     purchaseHistoryRecordList: response.purchases
-        // See comment in messages.dart for why casting away nullability is safe.
+    // See comment in messages.dart for why casting away nullability is safe.
         .map((PlatformPurchaseHistoryRecord? r) => r!)
         .map(purchaseHistoryRecordWrapperFromPlatform)
         .toList(),
@@ -85,8 +84,7 @@ PurchasesHistoryResult purchaseHistoryResultFromPlatform(
 }
 
 /// Creates a [PurchaseHistoryRecordWrapper] from the Pigeon equivalent.
-PurchaseHistoryRecordWrapper purchaseHistoryRecordWrapperFromPlatform(
-    PlatformPurchaseHistoryRecord record) {
+PurchaseHistoryRecordWrapper purchaseHistoryRecordWrapperFromPlatform(PlatformPurchaseHistoryRecord record) {
   return PurchaseHistoryRecordWrapper(
     purchaseTime: record.purchaseTime,
     purchaseToken: record.purchaseToken,
@@ -99,28 +97,27 @@ PurchaseHistoryRecordWrapper purchaseHistoryRecordWrapperFromPlatform(
 }
 
 /// Creates a [PurchasesResultWrapper] from the Pigeon equivalent.
-PurchasesResultWrapper purchasesResultWrapperFromPlatform(
-    PlatformPurchasesResponse response,
+PurchasesResultWrapper purchasesResultWrapperFromPlatform(PlatformPurchasesResponse response,
     {bool forceOkResponseCode = false}) {
   return PurchasesResultWrapper(
     billingResult: resultWrapperFromPlatform(response.billingResult),
     purchasesList: response.purchases
-        // See TODOs in messages.dart for why casting away nullability is safe.
+    // See TODOs in messages.dart for why casting away nullability is safe.
         .map((PlatformPurchase? p) => p!)
         .map(purchaseWrapperFromPlatform)
         .toList(),
     responseCode: forceOkResponseCode
         ? BillingResponse.ok
         : const BillingResponseConverter()
-            .fromJson(response.billingResult.responseCode),
+        .fromJson(response.billingResult.responseCode),
   );
 }
 
 /// Creates an [AlternativeBillingOnlyReportingDetailsWrapper] from the Pigeon
 /// equivalent.
 AlternativeBillingOnlyReportingDetailsWrapper
-    alternativeBillingOnlyReportingDetailsWrapperFromPlatform(
-        PlatformAlternativeBillingOnlyReportingDetailsResponse response) {
+alternativeBillingOnlyReportingDetailsWrapperFromPlatform(
+    PlatformAlternativeBillingOnlyReportingDetailsResponse response) {
   return AlternativeBillingOnlyReportingDetailsWrapper(
     responseCode: const BillingResponseConverter()
         .fromJson(response.billingResult.responseCode),
@@ -130,8 +127,7 @@ AlternativeBillingOnlyReportingDetailsWrapper
 }
 
 /// Creates a [BillingConfigWrapper] from the Pigeon equivalent.
-BillingConfigWrapper billingConfigWrapperFromPlatform(
-    PlatformBillingConfigResponse response) {
+BillingConfigWrapper billingConfigWrapperFromPlatform(PlatformBillingConfigResponse response) {
   return BillingConfigWrapper(
     responseCode: const BillingResponseConverter()
         .fromJson(response.billingResult.responseCode),
@@ -150,15 +146,18 @@ PlatformQueryProduct platformQueryProductFromWrapper(ProductWrapper product) {
 
 /// Converts a [ProductType] to its Pigeon equivalent.
 PlatformProductType platformProductTypeFromWrapper(ProductType type) {
-  return switch (type) {
-    ProductType.inapp => PlatformProductType.inapp,
-    ProductType.subs => PlatformProductType.subs,
+  switch (type) {
+    case ProductType.inapp:
+      return PlatformProductType.inapp;
+      break;
+    case ProductType.subs:
+      return PlatformProductType.subs;
+      break;
   };
 }
 
 /// Creates a [PricingPhaseWrapper] from its Pigeon equivalent.
-PricingPhaseWrapper pricingPhaseWrapperFromPlatform(
-    PlatformPricingPhase phase) {
+PricingPhaseWrapper pricingPhaseWrapperFromPlatform(PlatformPricingPhase phase) {
   return PricingPhaseWrapper(
     billingCycleCount: phase.billingCycleCount,
     billingPeriod: phase.billingPeriod,
@@ -171,9 +170,13 @@ PricingPhaseWrapper pricingPhaseWrapperFromPlatform(
 
 /// Converts a Pigeon [PlatformProductType] to its public API equivalent.
 ProductType productTypeFromPlatform(PlatformProductType type) {
-  return switch (type) {
-    PlatformProductType.inapp => ProductType.inapp,
-    PlatformProductType.subs => ProductType.subs,
+  switch (type) {
+    case PlatformProductType.inapp:
+      return ProductType.inapp;
+      break;
+    case PlatformProductType.subs:
+      return ProductType.subs;
+      break;
   };
 }
 
@@ -198,28 +201,38 @@ PurchaseWrapper purchaseWrapperFromPlatform(PlatformPurchase purchase) {
 }
 
 /// Creates a [PurchaseStateWrapper] from the Pigeon equivalent.
-PurchaseStateWrapper purchaseStateWrapperFromPlatform(
-    PlatformPurchaseState state) {
-  return switch (state) {
-    PlatformPurchaseState.unspecified => PurchaseStateWrapper.unspecified_state,
-    PlatformPurchaseState.purchased => PurchaseStateWrapper.purchased,
-    PlatformPurchaseState.pending => PurchaseStateWrapper.pending,
+PurchaseStateWrapper purchaseStateWrapperFromPlatform(PlatformPurchaseState state) {
+  switch (state) {
+    case PlatformPurchaseState.unspecified:
+      return PurchaseStateWrapper.unspecified_state;
+      break;
+    case PlatformPurchaseState.purchased:
+      return PurchaseStateWrapper.purchased;
+      break;
+    case PlatformPurchaseState.pending:
+      return PurchaseStateWrapper.pending;
+      break;
   };
 }
 
 /// Creates a [RecurrenceMode] from the Pigeon equivalent.
 RecurrenceMode recurrenceModeFromPlatform(PlatformRecurrenceMode mode) {
-  return switch (mode) {
-    PlatformRecurrenceMode.finiteRecurring => RecurrenceMode.finiteRecurring,
-    PlatformRecurrenceMode.infiniteRecurring =>
-      RecurrenceMode.infiniteRecurring,
-    PlatformRecurrenceMode.nonRecurring => RecurrenceMode.nonRecurring,
+    switch (mode) {
+
+    case PlatformRecurrenceMode.finiteRecurring:
+    return RecurrenceMode.finiteRecurring;
+      break;
+    case PlatformRecurrenceMode.infiniteRecurring:
+    return RecurrenceMode.infiniteRecurring;
+      break;
+    case PlatformRecurrenceMode.nonRecurring:
+    return RecurrenceMode.nonRecurring;
+      break;
   };
 }
 
 /// Creates a [SubscriptionOfferDetailsWrapper] from the Pigeon equivalent.
-SubscriptionOfferDetailsWrapper subscriptionOfferDetailsWrapperFromPlatform(
-    PlatformSubscriptionOfferDetails offer) {
+SubscriptionOfferDetailsWrapper subscriptionOfferDetailsWrapperFromPlatform(PlatformSubscriptionOfferDetails offer) {
   return SubscriptionOfferDetailsWrapper(
     basePlanId: offer.basePlanId,
     offerId: offer.offerId,
@@ -227,7 +240,7 @@ SubscriptionOfferDetailsWrapper subscriptionOfferDetailsWrapperFromPlatform(
     offerTags: offer.offerTags.map((String? s) => s!).toList(),
     offerIdToken: offer.offerToken,
     pricingPhases: offer.pricingPhases
-        // See comment in messages.dart for why casting away nullability is safe.
+    // See comment in messages.dart for why casting away nullability is safe.
         .map((PlatformPricingPhase? p) => p!)
         .map(pricingPhaseWrapperFromPlatform)
         .toList(),
@@ -235,13 +248,12 @@ SubscriptionOfferDetailsWrapper subscriptionOfferDetailsWrapperFromPlatform(
 }
 
 /// Creates a [UserChoiceDetailsWrapper] from the Pigeon equivalent.
-UserChoiceDetailsWrapper userChoiceDetailsFromPlatform(
-    PlatformUserChoiceDetails details) {
+UserChoiceDetailsWrapper userChoiceDetailsFromPlatform(PlatformUserChoiceDetails details) {
   return UserChoiceDetailsWrapper(
     originalExternalTransactionId: details.originalExternalTransactionId ?? '',
     externalTransactionToken: details.externalTransactionToken,
     products: details.products
-        // See comment in messages.dart for why casting away nullability is safe.
+    // See comment in messages.dart for why casting away nullability is safe.
         .map((PlatformUserChoiceProduct? p) => p!)
         .map(userChoiceDetailsProductFromPlatform)
         .toList(),
@@ -249,8 +261,7 @@ UserChoiceDetailsWrapper userChoiceDetailsFromPlatform(
 }
 
 /// Creates a [UserChoiceDetailsProductWrapper] from the Pigeon equivalent.
-UserChoiceDetailsProductWrapper userChoiceDetailsProductFromPlatform(
-    PlatformUserChoiceProduct product) {
+UserChoiceDetailsProductWrapper userChoiceDetailsProductFromPlatform(PlatformUserChoiceProduct product) {
   return UserChoiceDetailsProductWrapper(
     id: product.id,
     offerToken: product.offerToken ?? '',
